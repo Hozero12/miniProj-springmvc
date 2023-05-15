@@ -5,10 +5,7 @@ import hello.itemservice.domain.item.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,9 +29,40 @@ public class BasicItemController {
     }
 
     @GetMapping("/{itemId}")
-    public String member(@PathVariable Long itemId, Model model){
+    public String item(@PathVariable Long itemId, Model model){
          Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
+        return "basic/item";
+    }
+
+    @GetMapping("/add")
+    public String addForm(){
+        return "basic/addForm";
+    }
+
+   // @PostMapping("/add")
+    public String addItemV1(@RequestParam String itemName, Integer price, Integer quantity, Model model){
+        Item item = new Item();
+        item.setItemName(itemName);
+        item.setPrice(price);
+        item.setQuantity(quantity);
+
+        itemRepository.save(item);
+        model.addAttribute("item", item);
+
+        return "basic/item";
+    }
+
+   // @PostMapping("/add")
+    public String addItemV2(@ModelAttribute("item") Item item ){  //@ModelAttribute 에서 name 값을 생략해도 Item 클래스 이름의 앞글자를 소문자로 만들어서 반환한다.
+        itemRepository.save(item);
+     //   model.addAttribute("item", item);
+        return "basic/item";
+    }
+
+    @PostMapping("/add")
+    public String addItemV3(Item item ){
+        itemRepository.save(item);
         return "basic/item";
     }
 
