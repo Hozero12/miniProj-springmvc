@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+
 @Controller
 @RequestMapping("/basic/items")
 public class BasicItemController {
@@ -37,7 +38,9 @@ public class BasicItemController {
     }
 
     @GetMapping("/add")
-    public String addForm(){
+    public String addForm(Model model){
+        Item item = new Item();
+        model.addAttribute("item", new Item());
         return "basic/addForm";
     }
 
