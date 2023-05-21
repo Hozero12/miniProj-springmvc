@@ -2,6 +2,8 @@ package hello.itemservice.web.basic;
 
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
+import hello.itemservice.domain.item.ItemType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @Controller
 @RequestMapping("/basic/items")
 public class BasicItemController {
@@ -27,6 +29,11 @@ public class BasicItemController {
         regions.put("JEJU", "제주");
 
         return  regions;
+    }
+    @ModelAttribute("itemTypes")
+    public ItemType[] itemTypes(){
+        ItemType[] values = ItemType.values();
+            return  values;
     }
 
     @Autowired
@@ -44,7 +51,10 @@ public class BasicItemController {
 
     @GetMapping("/{itemId}")
     public String item(@PathVariable Long itemId, Model model){
-         Item item = itemRepository.findById(itemId);
+
+        Item item = itemRepository.findById(itemId);
+      //  log.info("itemType = {}", item.getItemType());
+
         model.addAttribute("item", item);
         return "basic/item";
     }
