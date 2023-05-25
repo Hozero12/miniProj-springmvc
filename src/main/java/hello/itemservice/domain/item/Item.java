@@ -16,15 +16,15 @@ public class Item {
 
     private Long id;
 
-    @NotBlank(groups = UpdateCheck.class)
+   // @NotBlank(groups = UpdateCheck.class)
     private String itemName;
 
-    @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
-    @Range(min = 1000, max = 1000000, groups = {SaveCheck.class, UpdateCheck.class})
+   // @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
+   // @Range(min = 1000, max = 1000000, groups = {SaveCheck.class, UpdateCheck.class})
     private Integer price;   // int 는 기본값이 0으로 들어가지만 Integer 는 값이 없을경우 null 이면 다음에 널체크 가능해서?
 
-    @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
-    @Max(value = 9999, groups = {SaveCheck.class})
+   // @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
+   // @Max(value = 9999, groups = {SaveCheck.class})
     private Integer quantity ;
 
 
