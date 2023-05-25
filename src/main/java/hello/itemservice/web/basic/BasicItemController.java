@@ -1,6 +1,8 @@
 package hello.itemservice.web.basic;
 
 import hello.itemservice.domain.item.*;
+import hello.itemservice.web.form.ItemSaveForm;
+import hello.itemservice.web.form.ItemUpdateForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -100,11 +102,11 @@ public class BasicItemController {
     }
 
     @PostMapping("/add")
-    public String addItem(@Validated(SaveCheck.class) @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+    public String addItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 
 
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int resultPrice = item.getPrice() * item.getQuantity();
+        if (form.getPrice() != null && form.getQuantity() != null) {
+            int resultPrice = form.getPrice() * form.getQuantity();
             if (resultPrice < 10000) {
                 bindingResult.reject("totalPriceMin", new Object[]{10000, resultPrice}, null);
             }
@@ -114,6 +116,8 @@ public class BasicItemController {
             log.info("errors={}", bindingResult);
             return "/basic/addForm";
         }
+
+        Item item = new Item(form.getItemName(), form.getPrice(), form.getQuantity());
 
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
@@ -132,9 +136,9 @@ public class BasicItemController {
     }
 
     @PostMapping("/{itemId}/edit")
-    public String editItem(@PathVariable Long itemId, @Validated(UpdateCheck.class) @ModelAttribute Item item, BindingResult bindingResult){
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int resultPrice = item.getPrice() * item.getQuantity();
+    public String editItem(@PathVariable Long itemId, @Validated @ModelAttribute("item") ItemUpdateForm form, BindingResult bindingResult){
+        if (form.getPrice() != null && form.getQuantity() != null) {
+            int resultPrice = form.getPrice() * form.getQuantity();
             if (resultPrice < 10000) {
                 bindingResult.reject("totalPriceMin", new Object[]{10000, resultPrice}, null);
             }
@@ -145,7 +149,8 @@ public class BasicItemController {
             return "basic/editForm";
         }
 
-        itemRepository.update(itemId, item);
+        Item itemParam = new Item(form.getItemName(), form.getPrice(), form.getQuantity());
+        itemRepository.update(itemId, itemParam);
 
         return "redirect:/basic/items/{itemId}";
     }
