@@ -1,9 +1,6 @@
 package hello.itemservice.web.basic;
 
-import hello.itemservice.domain.item.DeliveryCode;
-import hello.itemservice.domain.item.Item;
-import hello.itemservice.domain.item.ItemRepository;
-import hello.itemservice.domain.item.ItemType;
+import hello.itemservice.domain.item.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -103,7 +100,7 @@ public class BasicItemController {
     }
 
     @PostMapping("/add")
-    public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+    public String addItem(@Validated(SaveCheck.class) @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
 
 
         if (item.getPrice() != null && item.getQuantity() != null) {
@@ -135,7 +132,7 @@ public class BasicItemController {
     }
 
     @PostMapping("/{itemId}/edit")
-    public String editItem(@PathVariable Long itemId, @Validated @ModelAttribute Item item, BindingResult bindingResult){
+    public String editItem(@PathVariable Long itemId, @Validated(UpdateCheck.class) @ModelAttribute Item item, BindingResult bindingResult){
         if (item.getPrice() != null && item.getQuantity() != null) {
             int resultPrice = item.getPrice() * item.getQuantity();
             if (resultPrice < 10000) {
