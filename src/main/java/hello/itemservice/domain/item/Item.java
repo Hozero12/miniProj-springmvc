@@ -1,5 +1,6 @@
 package hello.itemservice.domain.item;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class Item {
 
     private Long id;
@@ -36,9 +38,21 @@ public class Item {
     public Item() {
     }
 
+
     public Item(String itemName, Integer price, Integer quantity){
         this.itemName = itemName;
         this.price = price;
         this.quantity = quantity;
+    }
+
+
+    public Item(String itemName, Integer price, Integer quantity, Boolean open, List<String> regions, ItemType itemType, String deliveryCode) {
+        this.itemName = itemName;
+        this.price = price;
+        this.quantity = quantity;
+        this.open = open;
+        this.regions = regions;
+        this.itemType = itemType;
+        this.deliveryCode = deliveryCode;
     }
 }

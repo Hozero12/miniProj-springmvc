@@ -61,9 +61,10 @@ public class BasicItemController {
     @GetMapping("/{itemId}")
     public String item(@PathVariable Long itemId, Model model){
 
+
         Item item = itemRepository.findById(itemId);
       //  log.info("itemType = {}", item.getItemType());
-
+        log.info("item2={}", item );
         model.addAttribute("item", item);
         return "basic/item";
     }
@@ -102,7 +103,7 @@ public class BasicItemController {
     }
 
     @PostMapping("/add")
-    public String addItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+    public String addItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
 
         if (form.getPrice() != null && form.getQuantity() != null) {
@@ -117,7 +118,7 @@ public class BasicItemController {
             return "/basic/addForm";
         }
 
-        Item item = new Item(form.getItemName(), form.getPrice(), form.getQuantity());
+        Item item = new Item(form.getItemName(), form.getPrice(), form.getQuantity(),form.getOpen(),form.getRegions(),form.getItemType(),form.getDeliveryCode());
 
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
@@ -149,7 +150,7 @@ public class BasicItemController {
             return "basic/editForm";
         }
 
-        Item itemParam = new Item(form.getItemName(), form.getPrice(), form.getQuantity());
+        Item itemParam = new Item(form.getItemName(), form.getPrice(), form.getQuantity(),form.getOpen(),form.getRegions(),form.getItemType(),form.getDeliveryCode());
         itemRepository.update(itemId, itemParam);
 
         return "redirect:/basic/items/{itemId}";
