@@ -1,13 +1,12 @@
-package hello.itemservice.web.basic;
+package hello.itemservice.web.item;
 
 import hello.itemservice.domain.item.*;
-import hello.itemservice.web.form.ItemSaveForm;
-import hello.itemservice.web.form.ItemUpdateForm;
+import hello.itemservice.web.item.form.ItemSaveForm;
+import hello.itemservice.web.item.form.ItemUpdateForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ import java.util.*;
 @Slf4j
 @Controller
 @RequestMapping("/basic/items")
-public class BasicItemController {
+public class ItemController {
 
     public final ItemRepository itemRepository;
 
@@ -46,7 +45,7 @@ public class BasicItemController {
     }
 
     @Autowired
-    public BasicItemController(ItemRepository itemRepository){
+    public ItemController(ItemRepository itemRepository){
         this.itemRepository = itemRepository;
         init();
     }
