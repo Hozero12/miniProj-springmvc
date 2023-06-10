@@ -59,6 +59,13 @@ public class ItemController {
         return "basic/items";
     }
 
+    @GetMapping("/buyItems")
+    public String buyItems(Model model) {
+        List<Item> items = itemRepository.findAll();
+        model.addAttribute("items", items);
+        return "basic/buyItems";
+    }
+
     @GetMapping("/{itemId}")
     public String item(@PathVariable Long itemId, Model model){
 
