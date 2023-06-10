@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.http.HttpRequest;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -25,6 +27,8 @@ import java.net.http.HttpRequest;
 public class LoginController extends SessionConst {
     private final LoginService loginService;
     private final SessionManager sessionManager;
+
+    private final String[] sellerList = {"aaa", "seller1", "seller2"};
 
 
     @GetMapping("/login")
@@ -97,14 +101,14 @@ public class LoginController extends SessionConst {
         //세션에 로그인 회원정보 보관
         session.setAttribute(LOGIN_MEMBER, loginMember);
 
-        // 이전페이지로 리다이렉트 방식1
-//        String reURL = request.getParameter("redirectURL");
-//        if (reURL != null) {
-//            return "redirect:"+reURL;
-//        }
-//        return "redirect:/";
+        Stream<String> sellerStream = Arrays.stream(sellerList);
+        boolean isseller = sellerStream.anyMatch(a -> a.equals(loginMember.getLoginId()));
+        if(isseller){
+            session.setAttribute("user_type" , "seller");
+        }else{
+            session.setAttribute("user_type" , "user");
+        }
 
-        // 이전페이지로 리다이렉트 방식2   -> @RequestParam(defaultValue = "/") String reURL2
         return "redirect:" + reURL2;
 
     }

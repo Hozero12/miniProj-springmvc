@@ -36,13 +36,16 @@ public class HomeController extends SessionConst{
     }
 
     @GetMapping("/")
-    public String homeLoginV2Spring(@SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember, Model model) {
+    public String homeLoginV2Spring(@SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,
+                                    @SessionAttribute(name = "user_type", required = false) String userType,
+                                    Model model) {
 
         if(loginMember == null){
             return  "home";
         }
 
         model.addAttribute("member", loginMember);
+        model.addAttribute("userType", userType);
         return  "loginHome";
 
     }
