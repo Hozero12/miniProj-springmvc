@@ -1,6 +1,7 @@
 package hello.itemservice.web.intercepter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -8,6 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
+/**
+ *   인터셉터 : 스프링 mvc에서 제공
+ *   필터 : 자바에서 제공
+ *
+ *   필터 - 서블릿 - 인터셈터 - 컨트롤 순서
+ */
 @Slf4j
 public class LogIntercepter implements HandlerInterceptor {
 
@@ -21,13 +28,17 @@ public class LogIntercepter implements HandlerInterceptor {
 
         request.setAttribute(LOG_ID, uuid);
 
-        log.info("request [{}][{}][{}]", uuid, requestURI, handler);
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod hm = (HandlerMethod) handler;   //호출할 컨트롤러 메서드의 모든 정포가 포함되어 있음
+        }
+
+        log.info("1111 request [{}][{}][{}]", uuid, requestURI, handler);
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.info("postHandler = [{}]", modelAndView);
+        log.info("1111 postHandler = [{}]", modelAndView);
 
     }
 
@@ -35,9 +46,9 @@ public class LogIntercepter implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         String requestURI = request.getRequestURI();
         String uuid = (String)request.getAttribute(LOG_ID);
-        log.info("request [{}][{}][{}]", uuid, requestURI, handler);
+        log.info("1111 request [{}][{}][{}]", uuid, requestURI, handler);
 
-        if (ex != null) {
+        if (ex != null) {  //에러가 있을경우 발생
             log.error("after Completion error!!", ex);
         }
 

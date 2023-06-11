@@ -28,7 +28,7 @@ public class LoginController extends SessionConst {
     private final LoginService loginService;
     private final SessionManager sessionManager;
 
-    private final String[] sellerList = {"aaa", "seller1", "seller2"};
+    private final String[] sellerList = {"test", "seller1", "seller2"};
 
 
     @GetMapping("/login")
